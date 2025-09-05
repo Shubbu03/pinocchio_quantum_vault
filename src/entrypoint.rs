@@ -2,7 +2,7 @@
 
 use crate::instructions::{self, ProgramInstruction};
 use pinocchio::{
-    account_info::AccountInfo, default_panic_handler, msg, no_allocator, program_entrypoint,
+    account_info::AccountInfo, default_panic_handler, no_allocator, program_entrypoint,
     program_error::ProgramError, pubkey::Pubkey, ProgramResult,
 };
 
@@ -24,9 +24,8 @@ fn process_instruction(
         .ok_or(ProgramError::InvalidInstructionData)?;
 
     match ProgramInstruction::try_from(ix_disc)? {
-        ProgramInstruction::InitializeState => {
-            msg!("initialize");
-            instructions::initialize(accounts, instruction_data)
-        }
+        ProgramInstruction::OpenVault => instructions::open_vault(accounts, instruction_data),
+        ProgramInstruction::SplitVault => instructions::split_vault(accounts, instruction_data),
+        ProgramInstruction::CloseVault => instructions::close_vault(accounts, instruction_data),
     }
 }
